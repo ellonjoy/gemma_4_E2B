@@ -1,5 +1,10 @@
 import flet as ft
+import asyncio
+from controllers import start_inference
 from components import ListViewChats
+from components import AddBtn
+from components import PromptInput
+from components import SendBtn
 
 
 class HomeView:
@@ -41,8 +46,17 @@ class HomeView:
 
         ###################### Content ###########################
         self.lv_chats = ListViewChats()
+        self.add_btn = AddBtn()
+        self.prompt_input = PromptInput()
+        self.send_btn = SendBtn()
+        self.send_btn.content.on_click = lambda e: asyncio.create_task(start_inference(self.page, self.prompt_input.value))
+
         self.panel_input_row = ft.Row(
-            controls=[],
+            controls=[
+                self.add_btn,
+                self.prompt_input,
+                self.send_btn
+            ],
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
             spacing=0,
             vertical_alignment=ft.MainAxisAlignment.END,
