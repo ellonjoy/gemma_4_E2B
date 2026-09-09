@@ -1,6 +1,7 @@
 import flet as ft
-from controllers import start_inference
 import asyncio
+from controllers import start_inference
+from core import state
 
 
 class SendBtn(ft.Container):
@@ -39,7 +40,7 @@ class SendBtn(ft.Container):
         self.page.pubsub.unsubscribe_all()
 
     async def update_ui_btn(self, message):
-        if message == "true":
+        if state.inference:
             self.animted_gradient = True
             self.content.icon = ft.Icons.SQUARE
             while self.animted_gradient:
@@ -83,7 +84,7 @@ class SendBtn(ft.Container):
                 self.update()
                 await asyncio.sleep(.2)
                 
-        elif message == "false":
+        else:
             self.animted_gradient = False
             self.content.icon = ft.Icons.ARROW_UPWARD
             self.update()

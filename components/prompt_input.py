@@ -21,7 +21,6 @@ class PromptInput(ft.TextField):
         self.on_focus = True
         self.border_color = "transparent"
         self.focused_border_color = "transparent"
-        self.on_submit = ...
 
     def did_mount(self):
         self.page.pubsub.subscribe(self.update_ui_input)
@@ -30,6 +29,5 @@ class PromptInput(ft.TextField):
         self.page.pubsub.unsubscribe_all()
 
     def update_ui_input(self, message):
-        if message:
-            self.value = ""
-            self.update()
+        self.value = ""
+        self.update()

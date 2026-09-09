@@ -2,9 +2,20 @@ import flet as ft
 import asyncio
 from core import state
 from services import inferance
+from services import add_picture
+from services import render
 
+
+async def new_conversation(page: ft.Page):
+    state.conversation = state.engine.create_conversation()
+    state.chats = []
+    page.pubsub.send_all("new_conversation")
 
 async def start_inference(page: ft.Page, prompt: str):
+    if prompt == "":
+        return
+    
+    state.inference = True
     page.pubsub.send_all("true")
     prompt_text = ft.Container(
         content=ft.Container(
@@ -23,8 +34,38 @@ async def start_inference(page: ft.Page, prompt: str):
     response_text = ft.Container(
         margin=ft.Margin(bottom=12)
     )
+    if state.img_bytes is not None:
+        prompt_image = ft.Container(
+            content=ft.Container(
+                content=ft.Image(
+                    src=state.img_bytes,
+                    fit=ft.BoxFit.COVER,
+                    border_radius=14
+                ),
+                border=ft.Border.all(2, ft.Colors.BLUE),
+                border_radius=14,
+                width=200,
+                height=200
+            ),
+            alignment=ft.Alignment.CENTER_RIGHT,
+            margin=ft.Margin(bottom=5)
+        )
+        state.chats.append(prompt_image)
     state.chats.append(prompt_text)
     state.chats.append(response_text)
-    async for chunk in inferance(state.conversation, prompt.strip()):
-        response_text.content = ft.Markdown(value=chunk)
+    stream = inferance(state.conversation, prompt.strip(), state.img_bytes)
+    state.img_bytes = None
+    await asyncio.sleep(.2)
+    async for chunk in stream:
+        response_text.content = render(chunk)
+    state.inference = False
+    # state.img_bytes = None
     page.pubsub.send_all("false")
+
+async def add_image(page: ft.Page):
+    state.img_bytes = await add_picture()
+    page.pubsub.send_all("add_picture")
+
+async def del_image(page: ft.Page):
+    state.img_bytes = None
+    page.pubsub.send_all("del_picture")

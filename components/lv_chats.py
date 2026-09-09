@@ -17,11 +17,15 @@ class ListViewChats(ft.ListView):
         self.page.pubsub.unsubscribe_all()
 
     def update_ui_chats(self, message):
-        if message == "true":
+        if state.inference:
             self.stop = False
 
             while not self.stop:
                 self.update()
-        elif message == "false":
+        else:
             self.stop = True
+            self.update()
+
+        if message == "new_conversation":
+            self.controls = state.chats
             self.update()

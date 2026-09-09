@@ -11,6 +11,7 @@ with llm.Engine(
 ) as engine:
     def main(page: ft.Page):
         routing = Routing(page)
+        state.engine = engine
         state.conversation = engine.create_conversation()
 
         page.on_route_change = routing.route_change
