@@ -1,6 +1,7 @@
 import flet as ft
 import asyncio
 from core import state
+from services import create_conversation_model
 from services import inferance
 from services import add_picture
 from services import render
@@ -18,7 +19,7 @@ async def new_conversation(page: ft.Page) -> None:
         - **(page)** -> Referensi page yang dibutuhkan untuk melakukan broadcast update ke UI tertentu.
     """
 
-    state.conversation = state.engine.create_conversation(messages=state.initial_message)
+    state.conversation = create_conversation_model(state.engine, state.initial_message)
     state.chats = []
     page.pubsub.send_all("new_conversation")
 
