@@ -1,14 +1,15 @@
 import flet as ft
 from src import HomeView
+from src import Camera
 
 
 class Routing:
     def __init__(self, page: ft.Page):
         self.page = page
-        self.home_ui = HomeView(self.page)
 
     def route_change(self):
         self.page.views.clear()
+        home_ui = HomeView(self.page)
         self.page.views.append(
             ft.View(
                 route="/",
@@ -16,8 +17,8 @@ class Routing:
                     ft.SafeArea(
                         content=ft.Column(
                             controls=[
-                                self.home_ui.header,
-                                self.home_ui.content
+                                home_ui.header,
+                                home_ui.content
                             ]
                         ),
                         expand=True
@@ -26,6 +27,7 @@ class Routing:
             )
         )
         if self.page.route == "/camera":
+            camera_ui = Camera(self.page)
             self.page.views.append(
                 ft.View(
                     route="/camera",
@@ -33,7 +35,7 @@ class Routing:
                         ft.SafeArea(
                             content=ft.Column(
                                 controls=[
-                                    # camera_ui.panel
+                                    camera_ui.panel
                                 ]
                             ),
                             expand=True

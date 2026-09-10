@@ -11,8 +11,8 @@ class PromptInput(ft.TextField):
         self.hint_text = "Ada yang ingin anda tanyakan?"
         self.multiline = True
         self.max_lines = 5
-        self.content_padding = 0
-        self.text_size = 13
+        self.content_padding = 2
+        self.text_size = 14
         self.hint_style = ft.TextStyle(
             color="#525252"
         )

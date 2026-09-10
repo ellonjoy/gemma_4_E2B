@@ -1,6 +1,6 @@
 import flet as ft
 import asyncio
-from controllers import start_inference, new_conversation, add_image, del_image
+from controllers import start_inference, new_conversation, add_image, del_image, open_cam
 from components import ListViewChats
 from components import AddBtn
 from components import PromptInput
@@ -50,6 +50,7 @@ class HomeView:
         self.prompt_input = PromptInput()
         self.send_btn = SendBtn()
         self.add_btn.content.controls[0].items[0].on_click = lambda e: asyncio.create_task(add_image(self.page))
+        self.add_btn.content.controls[0].items[1].on_click = lambda e: asyncio.create_task(open_cam(self.page))
         self.add_btn.content.controls[1].controls[1].on_click = lambda e: asyncio.create_task(del_image(self.page))
         self.prompt_input.on_submit = lambda e: asyncio.create_task(start_inference(self.page, self.prompt_input.value))
         self.send_btn.content.on_click = lambda e: asyncio.create_task(start_inference(self.page, self.prompt_input.value))

@@ -1,13 +1,17 @@
 import flet as ft
+import flet_camera as fc
 import asyncio
 from core import state
 from services import inferance
 from services import add_picture
 from services import render
+from services import get_camera
+from services import init_camera
+from services import take_a_photo
 
 
 async def new_conversation(page: ft.Page):
-    state.conversation = state.engine.create_conversation()
+    state.conversation = state.engine.create_conversation(messages=state.initial_message)
     state.chats = []
     page.pubsub.send_all("new_conversation")
 
@@ -59,7 +63,6 @@ async def start_inference(page: ft.Page, prompt: str):
     async for chunk in stream:
         response_text.content = render(chunk)
     state.inference = False
-    # state.img_bytes = None
     page.pubsub.send_all("false")
 
 async def add_image(page: ft.Page):
@@ -69,3 +72,18 @@ async def add_image(page: ft.Page):
 async def del_image(page: ft.Page):
     state.img_bytes = None
     page.pubsub.send_all("del_picture")
+
+
+# camera_open = OpenCamera(state.camera)
+async def open_cam(page: ft.Page):
+    await page.push_route("/camera")
+    try:
+        await get_camera(state.camera)
+    except RuntimeError:
+        await page.push_route("/")
+    await init_camera(state.camera)
+
+async def take_picture(e: ft.ControlEvent):
+    state.img_bytes = await take_a_photo(state.camera)
+    await e.page.push_route("/")
+    e.page.pubsub.send_all("add_picture")

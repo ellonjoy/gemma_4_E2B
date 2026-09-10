@@ -34,6 +34,9 @@ class AddBtn(ft.Container):
                             on_click=...
                         ),
                     ],
+                    width=40,
+                    height=40,
+                    margin=ft.Margin(bottom=4),
                     visible=True
                 ),
                 ft.Stack(
@@ -54,8 +57,8 @@ class AddBtn(ft.Container):
                             icon=ft.Icons.CLOSE,
                             icon_size=12,
                             width=20,
-                            right=2,
-                            top=-10,
+                            right=1,
+                            top=-15,
                             mouse_cursor=ft.MouseCursor.CLICK,
                         )
                     ],

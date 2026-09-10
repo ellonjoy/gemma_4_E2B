@@ -3,7 +3,6 @@ import litert_lm as llm
 from core import state
 from core import Routing
 
-
 with llm.Engine(
     state.model_path,
     backend=llm.Backend.CPU(),
@@ -12,7 +11,7 @@ with llm.Engine(
     def main(page: ft.Page):
         routing = Routing(page)
         state.engine = engine
-        state.conversation = engine.create_conversation()
+        state.conversation = engine.create_conversation(messages=state.initial_message)
 
         page.on_route_change = routing.route_change
         page.on_view_pop = routing.view_pop
