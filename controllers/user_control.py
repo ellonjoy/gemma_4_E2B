@@ -1,5 +1,4 @@
 import flet as ft
-import flet_camera as fc
 import asyncio
 from core import state
 from services import inferance
@@ -10,12 +9,33 @@ from services import init_camera
 from services import take_a_photo
 
 
-async def new_conversation(page: ft.Page):
+async def new_conversation(page: ft.Page) -> None:
+    """
+    Membuat konversasi baru saat context window telah mencapai limit.
+    Fungsi new_conversation berfungsi untuk membuat konteks percakapan baru dengan memperbarui nilai state.conversation.
+
+    ## **Args**:
+        - **(page)** -> Referensi page yang dibutuhkan untuk melakukan broadcast update ke UI tertentu.
+    """
+
     state.conversation = state.engine.create_conversation(messages=state.initial_message)
     state.chats = []
     page.pubsub.send_all("new_conversation")
 
-async def start_inference(page: ft.Page, prompt: str):
+async def start_inference(page: ft.Page, prompt: str) -> None:
+    """
+    # **Deskripsi**
+
+    Model melakukan inference terhadap prompt input seperti teks atau gambar.
+    Fungsi ini akan mengubah nilai API state agar UI dapat melakukan update saat fungsi ini dipanggil.
+    Fungsi generator seperti inference() akan menghasilkan chunk teks dan diproses didalam looping kemudian
+    akan diteruskan ke fungsi render() untuk melakukan rendering markdown.
+
+    ## **Args**:
+        - **(page)** -> Referensi page yang dibutuhkan untuk melakukan broadcast update ke UI tertentu.
+        - **(prompt)** -> Berupa teks yang akan dijadikan sebagai inputan untuk melakukan inference.
+    """
+
     if prompt == "":
         return
     
@@ -57,7 +77,7 @@ async def start_inference(page: ft.Page, prompt: str):
         state.chats.append(prompt_image)
     state.chats.append(prompt_text)
     state.chats.append(response_text)
-    stream = inferance(state.conversation, prompt.strip(), state.img_bytes)
+    stream = inferance(state.conversation, prompt.strip(), state.img_bytes) # Fungsi generator
     state.img_bytes = None
     await asyncio.sleep(.2)
     async for chunk in stream:
@@ -65,17 +85,40 @@ async def start_inference(page: ft.Page, prompt: str):
     state.inference = False
     page.pubsub.send_all("false")
 
-async def add_image(page: ft.Page):
+async def add_image(page: ft.Page) -> None:
+    """
+    Memanggil fungsi add_picture() untuk menambahkan gambar dan mengupdate nilai API state.img_bytes.
+
+    ## **Args**:
+        - **(page)** -> Referensi page yang dibutuhkan untuk melakukan broadcast update ke UI tertentu.
+    """
+
     state.img_bytes = await add_picture()
     page.pubsub.send_all("add_picture")
 
-async def del_image(page: ft.Page):
+async def del_image(page: ft.Page) -> None:
+    """
+    Menghapus nilai gambar dari API state dan update UI tertentu.
+
+    ## **Args**:
+        - **(page)** -> Referensi page yang dibutuhkan untuk melakukan broadcast update ke UI tertentu.
+    """
+
     state.img_bytes = None
     page.pubsub.send_all("del_picture")
 
+async def open_cam(page: ft.Page) -> None:
+    """
+    # **Deskripsi**
 
-# camera_open = OpenCamera(state.camera)
-async def open_cam(page: ft.Page):
+    UI berpindah ke halaman tampilan camera dan memanggil fungsi asyncrhonous get_camera()
+    untuk mengambil jumlah kamera perangkat yang tersedia dan init_camera() untuk melakukan
+    inisialisasi terhadap kamera yang dipilih.
+
+    ## **Args**:
+        - **(page)** -> Referensi page yang dibutuhkan untuk melakukan broadcast update ke UI tertentu.
+    """
+
     await page.push_route("/camera")
     try:
         await get_camera(state.camera)
@@ -84,6 +127,14 @@ async def open_cam(page: ft.Page):
     await init_camera(state.camera)
 
 async def take_picture(e: ft.ControlEvent):
+    """
+    Memanggil fungsi take_a_photo() untuk mengambil foto dan mengupdate nilai API state.img_bytes
+    dan otomatis berpindah ke halaman utama.
+
+    ## **Args**:
+        - **(e)** -> Event Control.
+    """
+
     state.img_bytes = await take_a_photo(state.camera)
     await e.page.push_route("/")
     e.page.pubsub.send_all("add_picture")
