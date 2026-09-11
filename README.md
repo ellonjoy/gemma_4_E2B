@@ -1,6 +1,6 @@
 # **GEMMA-4-E2B-IT**
 
-# ![Deskripsi Banner](assets/images/gemma4_banner.png)
+# ![Deskripsi Banner](assets/images/gemma4_banner.jpeg)
 
 [![Python Version](https://img.shields.io/badge/Python-Version%203.12.3-green.svg)](https://www.python.org/downloads/)
 [![Flet](https://img.shields.io/badge/Flet-Version%200.86.3-FF4D6D.svg)](https://flet.dev/)
@@ -8,7 +8,7 @@
 
 ## Deskripsi
 
-Gemma-4-E2B adalah salah satu model AI llm yang dirancang khusus untuk bisa berjalan secara lokal pada perangkat seperti smartphone atau komputer tanpa koneksi internet. Diproject ini, saya membuat sebuah aplikasi chatbot yang di integrasikan dengan model gemma-4-E2B-it dengan nama AI-Assistent. AI-Assistent merupakan sebuah aplikasi yang dirancang untuk mempercantik tampilan supaya user lebih mudah dalam menggunakan model tersebut karena seperti yang tahu, model gemma-4-E2B membutuhkan infrastruktur perangkat lunak/mesin inference untuk dapat berjalan seperti (Ollama, LM Studio, dll). Untuk itu saya menggunakan library litert-lm-api sebagai infrastruktur untuk menjalan modelnya dikarenakan implementasinya lebih mudah diimplementasikan dibandingkan library seperti tensorflow.
+Gemma-4-E2B adalah salah satu model AI llm yang dirancang khusus untuk bisa berjalan secara lokal pada perangkat seperti smartphone atau komputer tanpa koneksi internet. Diproject ini, saya membuat sebuah aplikasi chatbot yang di integrasikan dengan model gemma-4-E2B-it dengan nama SUBYANTO. SUBYANTO merupakan sebuah aplikasi chatbot yang dirancang supaya user lebih mudah dalam menggunakan model tersebut karena seperti yang tahu, model gemma-4-E2B membutuhkan infrastruktur perangkat lunak/mesin inference untuk dapat berjalan seperti (Ollama, LM Studio, dll). Untuk itu saya menggunakan library litert-lm-api sebagai infrastruktur untuk menjalan modelnya dikarenakan implementasinya lebih mudah diimplementasikan dibandingkan library seperti tensorflow.
 
 ## Demo Aplikasi
 
@@ -17,24 +17,23 @@ Gemma-4-E2B adalah salah satu model AI llm yang dirancang khusus untuk bisa berj
 | :-------- | :------- |
 | <img src="assets/images/mobile.png"></img> | <img src="assets/images/web.png"></img> |
 
-### Video
-| Web View | Mobile View |
-|:-------- | :---------- |
-| ![WebView](assets/images/web_video.GIF) | ![MobileView](assets/images/mobile_video.GIF) |
-
 ## Tech Stack
 
 **User Interface**: Flet, Python
 
 **Backend**: Flet-Camera, Litert-LM-API, Python
 
-
-
 ## Requirements
+
+Requirements yang dibutuhkan untuk menjalankan program aplikasinya:
 
 - [requirements.txt](requirements.txt)
 
 ## Instalasi
+
+Install terlebih dahulu model gemma-4-E2B:
+
+Download Model: [gemma-4-E2B-it.litertlm](https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm/tree/main)
 
 Aktifkan folder venv "gemma_4_E2B" terlebih dahulu:
 
