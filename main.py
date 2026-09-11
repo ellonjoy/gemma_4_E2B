@@ -5,6 +5,7 @@ from core import Routing
 
 with llm.Engine(
     state.model_path,
+    max_num_tokens=8192,
     backend=llm.Backend.CPU(),
     vision_backend=llm.Backend.CPU()
 ) as engine:

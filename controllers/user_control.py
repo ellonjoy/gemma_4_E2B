@@ -39,7 +39,8 @@ async def start_inference(page: ft.Page, prompt: str) -> None:
 
     if prompt == "":
         return
-    
+
+    state.chats = []
     state.inference = True
     page.pubsub.send_all("true")
     prompt_text = ft.Container(

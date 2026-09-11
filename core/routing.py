@@ -15,6 +15,8 @@ class Routing:
                 route="/",
                 controls=[
                     ft.SafeArea(
+                        width=800,
+                        align=ft.Alignment.CENTER,
                         content=ft.Column(
                             controls=[
                                 home_ui.header,

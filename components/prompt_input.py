@@ -18,7 +18,7 @@ class PromptInput(ft.TextField):
         )
         self.shift_enter = True
         self.expand = True
-        self.on_focus = True
+        self.autofocus = True
         self.border_color = "transparent"
         self.focused_border_color = "transparent"
 

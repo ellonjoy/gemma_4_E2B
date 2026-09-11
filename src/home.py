@@ -21,16 +21,25 @@ class HomeView:
         ######################## Header ########################
         self.header_row = ft.Row(
             controls=[
-                ft.TextButton(
-                    content="AI Assistent",
-                    style=ft.ButtonStyle(
-                        text_style=ft.TextStyle(
-                            size=25,
-                            weight="bold"
+                ft.Column(
+                    controls=[
+                        ft.TextButton(
+                            content="SUBYANTO",
+                            style=ft.ButtonStyle(
+                                text_style=ft.TextStyle(
+                                    size=25,
+                                    weight="bold"
+                                ),
+                                padding=0,
+                                color="#ffffff",
+                            ),
+                            on_click=lambda e: asyncio.create_task(new_conversation(self.page))
                         ),
-                        color="#ffffff",
-                    ),
-                    on_click=lambda e: asyncio.create_task(new_conversation(self.page))
+                        ft.Text(
+                            value="Chatbot offline omon-omon",
+                            size=15
+                        )
+                    ]
                 ),
                 ft.Container(expand=True)
             ],

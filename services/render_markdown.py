@@ -22,30 +22,40 @@ def render(md_text: str) -> ft.Column:
 
         text_before = md_text[last_end:start]
         if text_before:
+            controls.extend(process_text_and_table(text_before))
+
+        controls.append(create_custom_block_code(lang_code, content))
+        last_end = end
+    text_end = md_text[last_end:]
+    if text_end:
+        controls.extend(process_text_and_table(text_end))
+
+    return ft.Column(
+        controls=controls
+    )
+
+def process_text_and_table(md_text: str):
+    controls = []
+    table_pattern = r"((?:^[^\n]*\|[^\n]*$\n?)+)"
+
+    for part in re.split(table_pattern, md_text, flags=re.MULTILINE):
+        if not part.strip():
+            continue
+
+        if "|" in part and "\n" in part.strip():
+            controls.append(create_custom_block_table(part))
+        else:
             controls.append(ft.Markdown(
-                value=text_before,
+                value=part.strip(),
                 selectable=True,
                 extension_set=ft.MarkdownExtensionSet.GITHUB_WEB,
                 code_theme=ft.MarkdownCodeTheme.TOMORROW_NIGHT_BRIGHT,
                 soft_line_break=True
             ))
 
-        controls.append(create_custom_block(lang_code, content))
-        last_end = end
-    text_end = md_text[last_end:]
-    if text_end:
-        controls.append(ft.Markdown(
-            value=text_end,
-            selectable=True,
-            extension_set=ft.MarkdownExtensionSet.GITHUB_WEB,
-            code_theme=ft.MarkdownCodeTheme.TOMORROW_NIGHT_BRIGHT,
-            soft_line_break=True
-        ))
-    return ft.Column(
-        controls=controls
-    )
+    return controls
 
-def create_custom_block(language: str, content_text: str) -> ft.Container:
+def create_custom_block_code(language: str, content_text: str) -> ft.Container:
     """
     Membuat custom block kode ketika model menghasilkan sebuah block kode saat
     melakukan respon yang ditanda dengan ```block code``` dan mengembalikan property
@@ -100,3 +110,58 @@ def create_custom_block(language: str, content_text: str) -> ft.Container:
     )
 
     return custom_block
+
+def create_custom_block_table(md_text: str):
+    lines = md_text.strip().split("\n")
+    if not lines:
+        return ft.Text("")
+
+    headers = [col.strip() for col in lines[0].split("|") if col.strip()]
+    if not headers:
+        return ft.Text(lines[0])
+
+    row_data = []
+    if len(lines) > 2:
+        for line in lines[2:]:
+            if line.strip() == "":
+                continue
+
+            cells = [cell.strip() for cell in line.split("|") if cell.strip()]
+            cells = cells + [""] * (len(headers)-len(cells))
+            cells = cells[:len(headers)]
+            row_data.append(cells)
+
+    return ft.Container(
+        content=ft.Column(
+            controls=[
+                ft.Row(
+                    controls=[
+                        ft.DataTable(
+                            horizontal_lines=ft.BorderSide(1, ft.Colors.OUTLINE_VARIANT),
+                            columns=[
+                                ft.DataColumn(
+                                    ft.Text(
+                                        value=h,
+                                        weight="bold"
+                                    )
+                                ) for h in headers
+                            ],
+                            rows=[
+                                ft.DataRow(
+                                    cells=[
+                                        ft.DataCell(
+                                            ft.Text(
+                                                value=c
+                                            )
+                                        ) for c in row
+                                    ]
+                                ) for row in row_data
+                            ]
+                        )
+                    ],
+                    scroll=ft.ScrollMode.AUTO
+                )
+            ],
+            scroll=ft.ScrollMode.AUTO
+        )
+    )
