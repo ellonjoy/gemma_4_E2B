@@ -140,9 +140,8 @@ def create_custom_block_table(md_text: str):
                             horizontal_lines=ft.BorderSide(1, ft.Colors.OUTLINE_VARIANT),
                             columns=[
                                 ft.DataColumn(
-                                    ft.Text(
-                                        value=h,
-                                        weight="bold"
+                                    ft.Markdown(
+                                        value=h
                                     )
                                 ) for h in headers
                             ],
@@ -150,7 +149,7 @@ def create_custom_block_table(md_text: str):
                                 ft.DataRow(
                                     cells=[
                                         ft.DataCell(
-                                            ft.Text(
+                                            ft.Markdown(
                                                 value=c
                                             )
                                         ) for c in row

@@ -1,4 +1,5 @@
 import flet as ft
+import gc
 import litert_lm as llm
 from core import state
 from core import Routing
@@ -20,4 +21,14 @@ with llm.Engine(
         routing.route_change()
 
     if __name__=="__main__":
-        ft.run(main)
+        try:
+            ft.run(main)
+        except KeyboardInterrupt:
+            print("berhenti")
+        finally:
+            if state.conversation:
+                del state.conversation
+            if state.engine:
+                del state.engine
+            gc.collect()
+            gc.collect()
