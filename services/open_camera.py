@@ -1,13 +1,13 @@
 import flet_camera as fc
 
 
-# class OpenCamera:
-    # def __init__(self, camera: fc.Camera):
-    #     self.camera = camera
-    #     self.cameras = None
 cameras = None
 
-def has_human_readable(camera):
+def has_human_readable(camera: fc.CameraDescription) -> bool:
+    """
+    Fungsi untuk memastikan format pembacaan kamera mudah untuk dibaca.
+    """
+
     name = camera.name.strip()
     if not name:
         return False
@@ -29,7 +29,7 @@ def camera_label(camera: fc.CameraDescription) -> str:
     lens_type = lens_map.get(camera.lens_type.value, camera.lens_type.value)
     return f"{direction} ({lens_type})"
 
-async def get_camera(camera: fc.Camera):
+async def get_camera(camera: fc.Camera) -> None:
     global cameras
     cameras = await camera.get_available_cameras()
     seen_labels: dict[str, int] = {}
@@ -39,7 +39,7 @@ async def get_camera(camera: fc.Camera):
         if seen_labels[label] >= 1:
             label = f"{label} {seen_labels[label]}"
 
-async def init_camera(camera: fc.Camera):
+async def init_camera(camera: fc.Camera) -> None:
     if not cameras:
         return
 
@@ -54,7 +54,7 @@ async def init_camera(camera: fc.Camera):
         image_format_group=fc.ImageFormatGroup.JPEG
     )
 
-async def take_a_photo(camera: fc.Camera):
+async def take_a_photo(camera: fc.Camera) -> (bytes | None):
     try:
         if not await init_camera(camera):
             data = await camera.take_picture()

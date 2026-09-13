@@ -1,6 +1,6 @@
 import flet as ft
 import asyncio
-from controllers import start_inference, new_conversation, add_image, del_image, open_cam
+from controllers import start_inference, new_conversation, add_image, del_image, open_cam, paste_img_clip
 from components import ListViewChats
 from components import AddBtn
 from components import PromptInput
@@ -17,29 +17,39 @@ class HomeView:
 
         ##################### Referensi halaman ###########################
         self.page = page
+        # self.page.theme = ft.ThemeMode.DARK
+        self.page.on_keyboard_event = paste_img_clip
 
         ######################## Header ########################
         self.header_row = ft.Row(
             controls=[
                 ft.Column(
                     controls=[
-                        ft.TextButton(
-                            content="SUBYANTO",
-                            style=ft.ButtonStyle(
-                                text_style=ft.TextStyle(
-                                    size=25,
-                                    weight="bold"
-                                ),
-                                padding=0,
-                                color="#ffffff",
+                        ft.ShaderMask(
+                            shader=ft.LinearGradient(
+                                begin=ft.Alignment.TOP_LEFT,
+                                end=ft.Alignment.BOTTOM_RIGHT,
+                                colors=[ft.Colors.BLUE, ft.Colors.PINK]
                             ),
-                            on_click=lambda e: asyncio.create_task(new_conversation(self.page))
+                            content=ft.TextButton(
+                                content="SUBYANTO",
+                                style=ft.ButtonStyle(
+                                    text_style=ft.TextStyle(
+                                        size=25,
+                                        weight="bold",
+                                    ),
+                                    padding=0,
+                                    color="#ffffff",
+                                ),
+                                on_click=lambda e: asyncio.create_task(new_conversation(self.page))
+                            )
                         ),
                         ft.Text(
                             value="Chatbot offline omon-omon",
                             size=15
                         )
-                    ]
+                    ],
+                    spacing=1
                 ),
                 ft.Container(expand=True)
             ],
@@ -76,7 +86,7 @@ class HomeView:
         )
         self.panel_input = ft.Container(
             content=self.panel_input_row,
-            bgcolor="#1b1b1b",
+            # bgcolor="#1b1b1b",
             border=ft.Border.all(1, "#2c2b2b"),
             padding=4,
             border_radius=20,

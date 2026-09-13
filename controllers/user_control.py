@@ -1,5 +1,7 @@
 import flet as ft
 import asyncio
+from PIL import ImageGrab
+from io import BytesIO
 from core import state
 from services import create_conversation_model
 from services import inferance
@@ -40,17 +42,24 @@ async def start_inference(page: ft.Page, prompt: str) -> None:
     if prompt == "":
         return
 
-    state.chats = []
+    # state.chats = []
     state.inference = True
     page.pubsub.send_all("true")
     prompt_text = ft.Container(
         content=ft.Container(
-            content=ft.Text(
+            content=ft.TextField(
                 value=prompt,
+                read_only=True,
+                border_color="transparent",
+                focused_border_color="transparent",
+                border=ft.InputBorder.NONE,
+                multiline=True,
+                max_lines=5,
+                content_padding=2,
                 expand_loose=True
             ),
-            bgcolor=ft.Colors.BLUE,
-            padding=15,
+            bgcolor=ft.Colors.GREY_900,
+            padding=12,
             expand_loose=True,
             border_radius=12,
         ),
@@ -68,7 +77,7 @@ async def start_inference(page: ft.Page, prompt: str) -> None:
                     fit=ft.BoxFit.COVER,
                     border_radius=14
                 ),
-                border=ft.Border.all(2, ft.Colors.BLUE),
+                border=ft.Border.all(2, ft.Colors.GREY_900),
                 border_radius=14,
                 width=200,
                 height=200
@@ -84,6 +93,7 @@ async def start_inference(page: ft.Page, prompt: str) -> None:
     await asyncio.sleep(.2)
     async for chunk in stream:
         response_text.content = render(chunk)
+    print(chunk)
     state.inference = False
     page.pubsub.send_all("false")
 
@@ -140,3 +150,17 @@ async def take_picture(e: ft.ControlEvent):
     state.img_bytes = await take_a_photo(state.camera)
     await e.page.push_route("/")
     e.page.pubsub.send_all("add_picture")
+
+
+def paste_img_clip(e):
+    if e.ctrl and e.key == "V":
+        # Mengambil apa pun yang ada di clipboard
+        clipboard_data = ImageGrab.grabclipboard()
+        if clipboard_data is not None:
+            buffer = BytesIO()
+            clipboard_data.save(buffer, format="PNG")
+            
+            # 3. Ambil data biner aslinya
+            raw_bytes = buffer.getvalue()
+            state.img_bytes = raw_bytes
+            e.page.pubsub.send_all("add_picture")

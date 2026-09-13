@@ -4,6 +4,7 @@ import litert_lm as llm
 from core import state
 from core import Routing
 
+# Isiniasi Engine
 with llm.Engine(
     state.model_path,
     max_num_tokens=8192,
@@ -11,6 +12,7 @@ with llm.Engine(
     vision_backend=llm.Backend.CPU()
 ) as engine:
     def main(page: ft.Page):
+        page.theme_mode = ft.ThemeMode.DARK
         routing = Routing(page)
         state.engine = engine
         state.conversation = engine.create_conversation(messages=state.initial_message)

@@ -1,4 +1,5 @@
 import flet as ft
+from core import state
 
 
 class PromptInput(ft.TextField):
@@ -13,9 +14,9 @@ class PromptInput(ft.TextField):
         self.max_lines = 5
         self.content_padding = 2
         self.text_size = 14
-        self.hint_style = ft.TextStyle(
-            color="#525252"
-        )
+        # self.hint_style = ft.TextStyle(
+        #     color="#525252"
+        # ),
         self.shift_enter = True
         self.expand = True
         self.autofocus = True
@@ -29,5 +30,9 @@ class PromptInput(ft.TextField):
         self.page.pubsub.unsubscribe_all()
 
     def update_ui_input(self, message):
-        self.value = ""
+        if state.inference:
+            self.value = ""
+            self.hint_text = ""
+        if message == "new_conversation":
+            self.hint_text = "Ada yang ingin anda tanyakan?"
         self.update()

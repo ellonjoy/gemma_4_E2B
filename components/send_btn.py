@@ -14,6 +14,7 @@ class SendBtn(ft.Container):
         self._content: ft.IconButton = ft.IconButton(
             icon=ft.Icons.ARROW_UPWARD,
             icon_size=18,
+            icon_color="#ffffff"
         )
         self._gradient = ft.LinearGradient(
             begin=ft.Alignment.TOP_LEFT,

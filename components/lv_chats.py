@@ -21,7 +21,7 @@ class ListViewChats(ft.ListView):
     async def update_ui_chats(self, message):
         if state.inference:
             self.stop = False
-            self.controls.extend(state.chats)
+            # self.controls.extend(state.chats)
 
             while not self.stop:
                 self.update()

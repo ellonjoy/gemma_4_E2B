@@ -8,7 +8,7 @@
 
 ## Deskripsi
 
-Gemma-4-E2B adalah salah satu model AI llm yang dirancang khusus untuk bisa berjalan secara lokal pada perangkat seperti smartphone atau komputer tanpa koneksi internet. Diproject ini, saya membuat sebuah aplikasi chatbot yang di integrasikan dengan model gemma-4-E2B-it dengan nama SUBYANTO. SUBYANTO merupakan sebuah aplikasi chatbot yang dirancang supaya user lebih mudah dalam menggunakan model tersebut karena seperti yang tahu, model gemma-4-E2B membutuhkan infrastruktur perangkat lunak/mesin inference untuk dapat berjalan seperti (Ollama, LM Studio, dll). Untuk itu saya menggunakan library litert-lm-api sebagai infrastruktur untuk menjalan modelnya dikarenakan implementasinya lebih mudah diimplementasikan dibandingkan library seperti tensorflow.
+Gemma-4-E2B adalah salah satu model AI llm yang dirancang khusus untuk bisa berjalan secara lokal pada perangkat seperti smartphone atau komputer tanpa koneksi internet. Diproject ini, saya membuat sebuah aplikasi chatbot yang di integrasikan dengan model gemma-4-E2B-it dengan nama SUBYANTO. SUBYANTO merupakan sebuah aplikasi chatbot yang dirancang supaya user lebih mudah dalam menggunakan model tersebut dikarenakan model gemma-4-E2B membutuhkan infrastruktur perangkat lunak/mesin inference untuk dapat berjalan seperti (Ollama, LM Studio, dll). Untuk itu saya menggunakan library litert-lm-api sebagai infrastruktur untuk menjalan modelnya dikarenakan implementasinya lebih mudah dibandingkan library lain seperti tensorflow.
 
 ## Demo Aplikasi
 

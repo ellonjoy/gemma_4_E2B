@@ -79,7 +79,11 @@ class AddBtn(ft.Container):
     def will_unmount(self):
         self.page.pubsub.unsubscribe_all()
 
-    def update_ui_btn(self, message):
+    def update_ui_btn(self, message) -> None:
+        """
+        Melakukan update tampilan UI add_btn ketika ada data gambar yang diupload.
+        """
+
         if state.img_bytes:
             self.content.controls[0].visible = False
             self.content.controls[1].controls[0].content.src = state.img_bytes

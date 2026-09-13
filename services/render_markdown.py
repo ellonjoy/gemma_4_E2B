@@ -8,6 +8,9 @@ def render(md_text: str) -> ft.Column:
     akan mengembalikan property 'ft.Column'.
     """
 
+    md_text = re.sub(r'\(\$(.*?)\$\)', r'$(\1)$', md_text)
+    md_text = md_text.replace("$)", "$ )")
+
     if md_text.count("```") % 2 != 0:
         md_text += "\n```"
 
@@ -57,9 +60,15 @@ def process_text_and_table(md_text: str):
 
 def create_custom_block_code(language: str, content_text: str) -> ft.Container:
     """
+    # **Deskripsi**
+
     Membuat custom block kode ketika model menghasilkan sebuah block kode saat
-    melakukan respon yang ditanda dengan ```block code``` dan mengembalikan property
+    melakukan respon yang ditandai dengan ```block code``` dan mengembalikan property
     'ft.Container'.
+
+    ## **Args**:
+    - **(language)**: Parameter bertipe string yang diisi dengan argumen bahasa pemrograman mis.(python, c++, dll).
+    - **(content_text)**: Parameter bertipe string  yang berisi block kode bahasa pemrograman. 
     """
     async def copy_text(e):
         await ft.Clipboard().set(content_text)
