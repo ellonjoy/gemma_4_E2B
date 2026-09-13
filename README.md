@@ -13,7 +13,7 @@ Gemma-4-E2B adalah salah satu model AI llm yang dirancang khusus untuk bisa berj
 ## Demo Aplikasi
 
 ### Screenshot
-| Mobile    | Type     |
+| Mobile    | Web     |
 | :-------- | :------- |
 | <img src="assets/images/mobile.png"></img> | <img src="assets/images/web.png"></img> |
 
