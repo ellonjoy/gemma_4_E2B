@@ -93,7 +93,6 @@ async def start_inference(page: ft.Page, prompt: str) -> None:
     await asyncio.sleep(.2)
     async for chunk in stream:
         response_text.content = render(chunk)
-    print(chunk)
     state.inference = False
     page.pubsub.send_all("false")
 

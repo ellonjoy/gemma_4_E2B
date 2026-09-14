@@ -51,6 +51,16 @@ def process_text_and_table(md_text: str):
             controls.append(ft.Markdown(
                 value=part.strip(),
                 selectable=True,
+                latex_scale_factor=1.3,
+                latex_style=ft.TextStyle(
+                    baseline=ft.TextBaseline.ALPHABETIC
+                ),
+                md_style_sheet=ft.MarkdownStyleSheet(
+                    code_text_style=ft.TextStyle(
+                        bgcolor="#333232",
+                        font_family="monospace"
+                    )
+                ),
                 extension_set=ft.MarkdownExtensionSet.GITHUB_WEB,
                 code_theme=ft.MarkdownCodeTheme.TOMORROW_NIGHT_BRIGHT,
                 soft_line_break=True
@@ -102,6 +112,9 @@ def create_custom_block_code(language: str, content_text: str) -> ft.Container:
                         ft.Markdown(
                             value=f"```{language}\n{content_text}\n```",
                             selectable=True,
+                            code_style_sheet=ft.MarkdownStyleSheet(
+                                codeblock_padding=ft.Padding.all(12),
+                            ),
                             extension_set=ft.MarkdownExtensionSet.GITHUB_WEB,
                             code_theme=ft.MarkdownCodeTheme.TOMORROW_NIGHT_BRIGHT,
                             soft_line_break=True
@@ -150,7 +163,8 @@ def create_custom_block_table(md_text: str):
                             columns=[
                                 ft.DataColumn(
                                     ft.Markdown(
-                                        value=h
+                                        value=h,
+                                        selectable=True
                                     )
                                 ) for h in headers
                             ],
@@ -159,7 +173,8 @@ def create_custom_block_table(md_text: str):
                                     cells=[
                                         ft.DataCell(
                                             ft.Markdown(
-                                                value=c
+                                                value=c,
+                                                selectable=True
                                             )
                                         ) for c in row
                                     ]
