@@ -35,6 +35,12 @@ Install terlebih dahulu model gemma-4-E2B:
 
 Download Model: [gemma-4-E2B-it.litertlm](https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm/tree/main)
 
+(Opsional) unduh xclip pada sistem operasi Linux untuk mendukung penempelan gambar:
+
+```bash
+sudo apt install xclip -y
+```
+
 Aktifkan folder venv "gemma_4_E2B" terlebih dahulu:
 
 **Linux**:
